@@ -4,7 +4,7 @@
  */
 package webcamstudio.streams;
 
-import com.trolltech.qt.gui.QImage;
+// import com.trolltech.qt.gui.QImage;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import webcamstudio.externals.ProcessRenderer;
