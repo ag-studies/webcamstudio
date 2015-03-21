@@ -59,7 +59,7 @@ void *v4l2l_vzalloc(unsigned long size)
 #include <linux/sched.h>
 #include <linux/slab.h>
 
-#define WEBCAMSTUDIO_VERSION_CODE KERNEL_VERSION(1,1,0)
+#define WEBCAMSTUDIO_VERSION_CODE KERNEL_VERSION(1,1,2)
 
 
 MODULE_DESCRIPTION("WebcamStudio virtual video device");
@@ -648,7 +648,11 @@ static int vidioc_querycap(struct file *file, void *priv, struct v4l2_capability
 
 	cap->version = WEBCAMSTUDIO_VERSION_CODE;
 	cap->capabilities =
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 19, 0)
+		V4L2_CAP_STREAMING | V4L2_CAP_READWRITE | V4L2_CAP_DEVICE_CAPS;
+#else
 		V4L2_CAP_STREAMING | V4L2_CAP_READWRITE;
+#endif
 	if (dev->announce_all_caps) {
 		cap->capabilities |= V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_VIDEO_OUTPUT;
 	} else {
@@ -660,6 +664,9 @@ static int vidioc_querycap(struct file *file, void *priv, struct v4l2_capability
 			cap->capabilities |= V4L2_CAP_VIDEO_OUTPUT;
 		}
 	}
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 19, 0)
+    cap->device_caps = (cap->capabilities & ~V4L2_CAP_DEVICE_CAPS);
+#endif
 
 	memset(cap->reserved, 0, sizeof(cap->reserved));
 	return 0;
