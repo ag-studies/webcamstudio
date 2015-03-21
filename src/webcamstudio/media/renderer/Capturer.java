@@ -31,7 +31,6 @@ public class Capturer {
 
     private int vport = 0;
     private int aport = 0;
-//    private boolean stopMe = false;
     private Stream stream;
     private ServerSocket videoServer = null;
     private ServerSocket audioServer = null;
