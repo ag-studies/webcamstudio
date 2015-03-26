@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,7 +29,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.Writer;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -906,17 +907,17 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
                                     skyRunComm = "gst-launch-0.10 v4l2src device="+device+" ! v4l2sink device=/dev/video21";
                                 }
                                 FileOutputStream fosD;
-                                DataOutputStream dosD = null;
+                                Writer dosD = null;
                                 try {
                                     fosD = new FileOutputStream(fileD);
-                                    dosD= new DataOutputStream(fosD);
+                                    dosD= new OutputStreamWriter(fosD);
                                 } catch (FileNotFoundException ex) {
                                     Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 try {
-                                    dosD.writeBytes("#!/bin/bash\n");
-                                    dosD.writeBytes(skyRunComm +"\n");
-                                    dosD.writeBytes("wait"+"\n");
+                                    dosD.write("#!/bin/bash\n");
+                                    dosD.write(skyRunComm +"\n");
+                                    dosD.write("wait"+"\n");
                                     dosD.close();
                                 } catch (IOException ex) {
                                     Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
@@ -1282,19 +1283,19 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
                 skyCamMode = true;
                 File fileD=new File(userHomeDir+"/.webcamstudio/"+"Sky.sh");
                 FileOutputStream fosD;
-                DataOutputStream dosD = null;
+                Writer dosD = null;
                 try {
                 fosD = new FileOutputStream(fileD);
-                dosD= new DataOutputStream(fosD);
+                dosD= new OutputStreamWriter(fosD);
                 } catch (FileNotFoundException ex) {
                 Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 try {
-                dosD.writeBytes("#!/bin/bash\n");
-                dosD.writeBytes(unregisterWSDevice+"\n");
-                dosD.writeBytes("wait"+"\n");
-                dosD.writeBytes(register2WSDevices+"\n");
-                dosD.writeBytes("wait"+"\n");
+                dosD.write("#!/bin/bash\n");
+                dosD.write(unregisterWSDevice+"\n");
+                dosD.write("wait"+"\n");
+                dosD.write(register2WSDevices+"\n");
+                dosD.write("wait"+"\n");
                 dosD.close();
                 } catch (IOException ex) {
                 Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
@@ -1338,19 +1339,19 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
                 jcbV4l2loopback.setEnabled(true);
                 File fileD=new File(userHomeDir+"/.webcamstudio/"+"SkyR.sh");
                 FileOutputStream fosD;
-                DataOutputStream dosD = null;
+                Writer dosD = null;
                 try {
                 fosD = new FileOutputStream(fileD);
-                dosD= new DataOutputStream(fosD);
+                dosD= new OutputStreamWriter(fosD);
                 } catch (FileNotFoundException ex) {
                 Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 try {
-                dosD.writeBytes("#!/bin/bash\n");
-                dosD.writeBytes(unregisterWSDevice +"\n");
-                dosD.writeBytes("wait"+"\n");
-                dosD.writeBytes(registerWSDevice +"\n");
-                dosD.writeBytes("wait"+"\n");
+                dosD.write("#!/bin/bash\n");
+                dosD.write(unregisterWSDevice +"\n");
+                dosD.write("wait"+"\n");
+                dosD.write(registerWSDevice +"\n");
+                dosD.write("wait"+"\n");
                 dosD.close();
                 } catch (IOException ex) {
                 Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
