@@ -18,12 +18,13 @@
 package webcamstudio.util;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,17 +49,17 @@ public class FindFires {
         commandFireWire = "grep . /sys/bus/firewire/devices/fw*/model_name & grep . /sys/bus/firewire/devices/fw*/guid";
         File fileD = new File(Tools.getUserHome()+"/.webcamstudio/"+"FWFind.sh");
         FileOutputStream fosD;
-        DataOutputStream dosD = null;
+        Writer dosD = null;
         try {
             fosD = new FileOutputStream(fileD);
-            dosD= new DataOutputStream(fosD);
+            dosD= new OutputStreamWriter(fosD);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             if (dosD != null) {
-            dosD.writeBytes("#!/bin/bash\n");
-            dosD.writeBytes(commandFireWire+"\n");
+            dosD.write("#!/bin/bash\n");
+            dosD.write(commandFireWire+"\n");
             dosD.close();
             }
         } catch (IOException ex) {

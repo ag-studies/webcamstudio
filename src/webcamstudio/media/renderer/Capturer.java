@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PushbackInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -51,6 +52,19 @@ public class Capturer {
     private int currTime = 0;
     private int pauseTime = 0;
 
+    static class VideoWrapper extends PushbackInputStream {
+        VideoWrapper(DataInputStream in) {
+            super(in);
+        }
+        @Override
+        public int available() throws IOException {
+            int b = super.read();
+            // do something specific?
+            super.unread(b);
+            return super.available();
+        }
+    }
+    
     public Capturer(Stream s) {
         stream = s;
         frame = new Frame(stream.getCaptureWidth(), stream.getCaptureHeight(), stream.getRate());

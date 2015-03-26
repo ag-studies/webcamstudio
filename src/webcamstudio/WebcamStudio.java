@@ -23,7 +23,6 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -31,7 +30,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.Writer;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -1550,26 +1551,26 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
 //        System.out.println("infoCmd: "+infoCmd);
         File fileD = new File(userHomeDir+"/.webcamstudio/"+"dSize.sh");
         FileOutputStream fosD;
-        DataOutputStream dosD = null;
+        Writer dosD = null;
         try {
             fosD = new FileOutputStream(fileD);
-            dosD= new DataOutputStream(fosD);
+            dosD= new OutputStreamWriter(fosD);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             if (dosD != null) {
-            dosD.writeBytes("#!/bin/bash\n");
-            dosD.writeBytes(infoCmd+"\n");
+            dosD.write("#!/bin/bash\n");
+            dosD.write(infoCmd+"\n");
             dosD.close();
             }
         } catch (IOException ex) {
             Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
         }
         fileD.setExecutable(true);
-        String batchDurationComm = userHomeDir+"/.webcamstudio/"+"dSize.sh";
+        String batchWCComm = userHomeDir+"/.webcamstudio/"+"dSize.sh";
         try {
-            Process infoP = rt.exec(batchDurationComm);
+            Process infoP = rt.exec(batchWCComm);
             Tools.sleep(10);
             infoP.waitFor(); //Author spoonybard896
             InputStream lsOut = infoP.getInputStream();
@@ -1657,19 +1658,20 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
             } else {
                 infoCmd = "ffmpeg -i " + "\"" + file.getAbsolutePath() + "\"";    
             }
+//            System.out.println(infoCmd);
             File fileD = new File(userHomeDir+"/.webcamstudio/"+"DCalc.sh");
             FileOutputStream fosD;
-            DataOutputStream dosD = null;
+            Writer dosD = null;
             try {
                 fosD = new FileOutputStream(fileD);
-                dosD= new DataOutputStream(fosD);
+                dosD = new OutputStreamWriter(fosD);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
                 if (dosD != null) {
-                dosD.writeBytes("#!/bin/bash\n");
-                dosD.writeBytes(infoCmd+"\n");
+                dosD.write("#!/bin/bash\n");
+                dosD.write(infoCmd+"\n");
                 dosD.close();
                 }
             } catch (IOException ex) {
