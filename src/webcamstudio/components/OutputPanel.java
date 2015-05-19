@@ -48,10 +48,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.SwingWorker;
@@ -99,7 +99,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
     int fmeCount = 0;
     String virtualDevice = "webcamstudio";
     TreeMap<String, ResourceMonitorLabel> labels = new TreeMap<>();
-    JFrame wDFrame;
+    JPanel wDFrame;
     FME currFME;
     JPopupMenu fmePopup = new JPopupMenu();
     JPopupMenu sinkFilePopup = new JPopupMenu();
@@ -123,7 +123,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
     
     /** Creates new form OutputPanel
      * @param aFrame */
-    public OutputPanel(JFrame aFrame) {
+    public OutputPanel(JPanel aFrame) {
         initComponents();
         f = new File(userHomeDir + "/.webcamstudio/Record To File");
         udpStream = new SinkUDP();
@@ -542,6 +542,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("webcamstudio/Languages"); // NOI18N
         setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("OUTPUT"))); // NOI18N
         setToolTipText(bundle.getString("DROP_OUTPUT")); // NOI18N
+        setMinimumSize(new java.awt.Dimension(247, 100));
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
 
         tglSkyCam.setText("SkyCam (Beta)");
@@ -1143,7 +1144,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
     
     private static class WaitingDialogOP extends JDialog {
         private final JLabel workingLabelOP = new JLabel();
-        WaitingDialogOP(JFrame owner) {
+        WaitingDialogOP(JPanel owner) {
             workingLabelOP.setBorder(BorderFactory.createLineBorder(Color.black));
             workingLabelOP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/working-4.png"))); // NOI18N        
             workingLabelOP.setText(" Working... ");
@@ -1160,6 +1161,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
             repaint();
         }
     }
+    
     private void jcbV4l2loopbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbV4l2loopbackActionPerformed
         if (jcbV4l2loopback.isSelected()) {
             virtualDevice = "v4l2loopback";

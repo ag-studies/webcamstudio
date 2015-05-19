@@ -84,7 +84,6 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         mixer.register(this);
         preMixer.register(this);
         spinFPS.setValue(MasterMixer.getInstance().getRate());
-        panChannels.add(new ChannelPanel(), BorderLayout.CENTER);
         final MasterPanel instanceSinkMP = this;
         FullScreen.setListenerFS(instanceSinkMP);
         WSPreview.setListenerPW(instanceSinkMP);
@@ -105,7 +104,6 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         panelPreview = new javax.swing.JPanel();
         lblCurtain = new javax.swing.JLabel();
         tabMixers = new javax.swing.JTabbedPane();
-        panChannels = new javax.swing.JPanel();
         panMixer = new javax.swing.JPanel();
         lblWidth = new javax.swing.JLabel();
         lblHeight = new javax.swing.JLabel();
@@ -127,7 +125,9 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         jLabel1 = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("LiVE View"));
-        setPreferredSize(new java.awt.Dimension(257, 465));
+        setMaximumSize(new java.awt.Dimension(258, 400));
+        setMinimumSize(new java.awt.Dimension(258, 380));
+        setPreferredSize(new java.awt.Dimension(258, 400));
         setLayout(new java.awt.BorderLayout());
 
         panelPreview.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
@@ -156,15 +156,11 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         add(panelPreview, java.awt.BorderLayout.NORTH);
 
         tabMixers.setName("tabMixers"); // NOI18N
-        tabMixers.setPreferredSize(new java.awt.Dimension(257, 353));
-
-        panChannels.setName("panChannels"); // NOI18N
-        panChannels.setLayout(new java.awt.BorderLayout());
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("webcamstudio/Languages"); // NOI18N
-        tabMixers.addTab(bundle.getString("CHANNELS"), panChannels); // NOI18N
+        tabMixers.setPreferredSize(new java.awt.Dimension(257, 300));
 
         panMixer.setName("panMixer"); // NOI18N
 
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("webcamstudio/Languages"); // NOI18N
         lblWidth.setText(bundle.getString("WIDTH")); // NOI18N
         lblWidth.setName("lblWidth"); // NOI18N
 
@@ -249,7 +245,7 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
                             .addComponent(lblHeight))
                         .addGap(14, 14, 14)
                         .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(spinFPS, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                            .addComponent(spinFPS, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                             .addComponent(spinHeight)
                             .addComponent(spinWidth)))
                     .addComponent(btnApplyToStreams, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -354,7 +350,7 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         jLabel1.setText("Fader");
         jLabel1.setName("jLabel1"); // NOI18N
         panPreview.add(jLabel1);
-        jLabel1.setBounds(110, 147, 41, 15);
+        jLabel1.setBounds(110, 147, 40, 17);
 
         tabMixers.addTab("Preview", panPreview);
 
@@ -374,7 +370,6 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         preMixer.stop();
         preMixer.setWidth(w);
         preMixer.setHeight(h);
-//        preMixer.setRate((Integer) spinFPS.getValue());
         PreviewMixer.getInstance().start();
     }
     
@@ -676,7 +671,6 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
     private javax.swing.JLabel lblHeight1;
     private javax.swing.JLabel lblHeight2;
     private javax.swing.JLabel lblWidth;
-    private javax.swing.JPanel panChannels;
     private javax.swing.JPanel panMixer;
     private javax.swing.JPanel panPreview;
     private javax.swing.JPanel panelPreview;
