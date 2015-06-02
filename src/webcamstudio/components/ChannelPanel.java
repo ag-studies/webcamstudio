@@ -115,23 +115,24 @@ public class ChannelPanel extends javax.swing.JPanel implements WebcamStudio.Lis
 //        System.out.println("userPsw: "+userPsw);
         if (!userPsw.equals("&")) {
             String [] userPswSplit = userPsw.split("&");
-            if (!userPsw.equals("&")) 
-            if (userPswSplit[0].equals(remUser) && userPswSplit[1].equals(remPsw)) {
-                boolean play = false;
-                for (Stream stream : streamS) {
-                    if (!stream.getClass().toString().contains("Sink")) {
-                        if (stream.isPlaying()){
-                            play = true;
+            if (!userPsw.equals("&")) {
+                if (userPswSplit[0].equals(remUser) && userPswSplit[1].equals(remPsw)) {
+                    boolean play = false;
+                    for (Stream stream : streamS) {
+                        if (!stream.getClass().toString().contains("Sink")) {
+                            if (stream.isPlaying()){
+                                play = true;
+                            }
                         }
                     }
-                }
-                if (play) {
-                    res = "/run";
+                    if (play) {
+                        res = "/run";
+                    } else {
+                        res = "/stop";
+                    }
                 } else {
-                    res = "/stop";
+                    res = "/error";
                 }
-            } else {
-                res = "/error";
             }
         } else {
             res = "/login";

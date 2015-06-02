@@ -154,6 +154,7 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
     private JLabel lblAudioIn = new JLabel("AudioIns(0)");
     private Color busyTab = Color.red;
     private Color resetTab = Color.black;
+    ArrayList<JDesktopPane> tabs = new ArrayList<>();
     
     @SuppressWarnings("unchecked") 
     private void initFaceDetection() throws IOException {
@@ -336,8 +337,18 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
         ImageIcon icon = new ImageIcon(this.getClass().getResource("/webcamstudio/resources/icon.png"));
         this.setIconImage(icon.getImage());
         
+        tabs.add(cameraDesktop);
+        tabs.add(videoDesktop);
+        tabs.add(musicDesktop);
+        tabs.add(pictureDesktop);
+        tabs.add(dvbDesktop);
+        tabs.add(urlDesktop);
+        tabs.add(desktopDesktop);
+        tabs.add(textDesktop);
+        tabs.add(audioInDesktop);
+        
         tabSources.setDropTarget(new DropTarget() {
-
+            
             @Override
             public synchronized void drop(DropTargetDropEvent evt) {
                 try {
@@ -783,6 +794,7 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
         cboAnimations = new javax.swing.JComboBox();
         btnAddAnimation = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
+        btnMinimizeTab = new javax.swing.JButton();
         btnMinimizeAll = new javax.swing.JButton();
         tabSources = new javax.swing.JTabbedPane();
         cameraDesktop = new javax.swing.JDesktopPane();
@@ -1361,7 +1373,23 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
         jSeparator2.setOpaque(true);
         toolbar.add(jSeparator2);
 
-        btnMinimizeAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/go-down.png"))); // NOI18N
+        btnMinimizeTab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/go-down.png"))); // NOI18N
+        btnMinimizeTab.setToolTipText(bundle.getString("ICON_TAB")); // NOI18N
+        btnMinimizeTab.setFocusable(false);
+        btnMinimizeTab.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnMinimizeTab.setMaximumSize(new java.awt.Dimension(29, 28));
+        btnMinimizeTab.setMinimumSize(new java.awt.Dimension(25, 25));
+        btnMinimizeTab.setName("btnMinimizeTab"); // NOI18N
+        btnMinimizeTab.setPreferredSize(new java.awt.Dimension(28, 28));
+        btnMinimizeTab.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnMinimizeTab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMinimizeTabActionPerformed(evt);
+            }
+        });
+        toolbar.add(btnMinimizeTab);
+
+        btnMinimizeAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/minimize-all.png"))); // NOI18N
         btnMinimizeAll.setToolTipText(bundle.getString("ICON_ALL")); // NOI18N
         btnMinimizeAll.setFocusable(false);
         btnMinimizeAll.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1702,7 +1730,7 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
         }
     }//GEN-LAST:event_btnAddAnimationActionPerformed
 
-    private void btnMinimizeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinimizeAllActionPerformed
+    private void btnMinimizeTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinimizeTabActionPerformed
         JDesktopPane selectedDesktop = null;
         int tabIndex = tabSources.getSelectedIndex();
         
@@ -1738,7 +1766,7 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
             }
         }
         
-    }//GEN-LAST:event_btnMinimizeAllActionPerformed
+    }//GEN-LAST:event_btnMinimizeTabActionPerformed
 
     private void btnSaveStudioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveStudioActionPerformed
         final java.awt.event.ActionEvent sEvt = evt;
@@ -2017,11 +2045,7 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
                     }
                     
                     if (lineR.contains("Audio:")) {
-                        if (lineR.contains("0 channels")) {
-                            audiofind = false;
-                        } else {
-                            audiofind = true;
-                        }
+                        audiofind = !lineR.contains("0 channels");
                     }
                     
                     if (autoAR) {
@@ -3003,6 +3027,22 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
             ResourceMonitor.getInstance().addMessage(label);
         }
     }//GEN-LAST:event_tglAutoARActionPerformed
+
+    private void btnMinimizeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinimizeAllActionPerformed
+        for (JDesktopPane desktop : tabs) {
+            for (Component c : desktop.getComponents()) {
+                if (c instanceof StreamDesktop) {
+                    StreamDesktop d = (StreamDesktop) c;
+                    try {
+                        Tools.sleep(20);
+                        d.setIcon(true);
+                    } catch (PropertyVetoException ex) {
+                        Logger.getLogger(WebcamStudio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_btnMinimizeAllActionPerformed
     
     /**
      *
@@ -3108,6 +3148,7 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
     private javax.swing.JButton btnImportStudio;
     private final javax.swing.JButton btnLoadStudio = new javax.swing.JButton();
     private javax.swing.JButton btnMinimizeAll;
+    private javax.swing.JButton btnMinimizeTab;
     private javax.swing.JButton btnNewStudio;
     private javax.swing.JButton btnRefreshWebcam;
     private javax.swing.JButton btnSaveStudio;

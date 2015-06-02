@@ -535,6 +535,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
         jcbV4l2loopback = new javax.swing.JCheckBox();
         tglSkyFlip = new javax.swing.JCheckBox();
         tglWSAudioDev = new javax.swing.JCheckBox();
+        btnAddFME = new javax.swing.JButton();
         tglAudioOut = new javax.swing.JToggleButton();
         tglRecordToFile = new javax.swing.JToggleButton();
         tglUDP = new javax.swing.JToggleButton();
@@ -585,6 +586,20 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
             }
         });
         add(tglWSAudioDev);
+
+        btnAddFME.setFont(new java.awt.Font("Noto Sans", 3, 12)); // NOI18N
+        btnAddFME.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/list-add.png"))); // NOI18N
+        btnAddFME.setText("Add FME");
+        btnAddFME.setToolTipText("Add FME");
+        btnAddFME.setMinimumSize(new java.awt.Dimension(25, 25));
+        btnAddFME.setName("btnAddFME"); // NOI18N
+        btnAddFME.setPreferredSize(new java.awt.Dimension(28, 28));
+        btnAddFME.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddFMEActionPerformed(evt);
+            }
+        });
+        add(btnAddFME);
 
         tglAudioOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/audio-card.png"))); // NOI18N
         tglAudioOut.setText("Audio Output");
@@ -1433,6 +1448,36 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
             Tools.sleep(100);            
         }
     }//GEN-LAST:event_tglWSAudioDevActionPerformed
+
+    private void btnAddFMEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFMEActionPerformed
+        final FME fme = new FME();
+        final FMEDialog fmeDiag = new FMEDialog(fme);
+        fmeDiag.setLocationRelativeTo(WebcamStudio.cboAnimations);
+        fmeDiag.setAlwaysOnTop(true);
+        fmeDiag.setVisible(true);
+        //        fme.setStandard(standard);
+        //        while (fmeDiag.isVisible()) {
+            //            Tools.sleep(100);
+            //        }
+        Thread addFME = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while (fmeDiag.isVisible()) {
+                    Tools.sleep(100);
+                }
+                if (FMEDialog.add.equals("ok")) {
+                    fmes.put(fme.getName(), fme);
+                    addButtonBroadcast(fme);
+                }
+            }
+        });
+        addFME.setPriority(Thread.MIN_PRIORITY);
+        addFME.start();
+
+        //        fmes.put(fme.getName(), fme);
+        //        addButtonBroadcast(fme);
+    }//GEN-LAST:event_btnAddFMEActionPerformed
     
     public static void execPACTL(String command) throws IOException, InterruptedException {
 //        String output;
@@ -1450,6 +1495,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddFME;
     private javax.swing.JCheckBox jcbV4l2loopback;
     private javax.swing.JToggleButton tglAudioOut;
     private javax.swing.JToggleButton tglRecordToFile;

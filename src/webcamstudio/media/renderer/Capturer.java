@@ -52,18 +52,6 @@ public class Capturer {
     private int currTime = 0;
     private int pauseTime = 0;
 
-    static class VideoWrapper extends PushbackInputStream {
-        VideoWrapper(DataInputStream in) {
-            super(in);
-        }
-        @Override
-        public int available() throws IOException {
-            int b = super.read();
-            // do something specific?
-            super.unread(b);
-            return super.available();
-        }
-    }
     
     public Capturer(Stream s) {
         stream = s;
@@ -310,4 +298,19 @@ public class Capturer {
         }
         return frame;
     }    
+
+    static class VideoWrapper extends PushbackInputStream {
+
+        VideoWrapper(DataInputStream in) {
+            super(in);
+        }
+
+        @Override
+        public int available() throws IOException {
+            int b = super.read();
+            // do something specific?
+            super.unread(b);
+            return super.available();
+        }
+    }
 }
