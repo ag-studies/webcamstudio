@@ -1,0 +1,124 @@
+webcamstudio (0.73) unstable; urgency=low
+
+  * Fixes: Stretch effect have to be resized only in png and text Streams.
+  * Fixes: Fixed Audio Output selection when starting from cmd line.
+  * Fixes: Transitions apply doesn't work correctly.
+  * Fixes: Pause icon in iconifed Stream-Panels appears in the wrong position.
+  * Fixes: Fixed some Scroolings rutines.
+  * Fixes: SourceText not correctly updated when in Timer or Clock mode.
+  * Fixes: Audio detection in load operations for onlyVideo files.
+  * Fixes: movie/music loop option.
+  * Fixes: Webcam LibAV command.
+  * Fixes: Restored Desktop custom framerate settings.
+  * Fixes: Gstreamer dvbsrc 1.4 workaround.
+  * Fixes: Fixed more Desktop FrameRate/ScreenNumber issues.
+  * Fixes: Fixed videos/movies Playback.
+  * Fixes: Fixed "0 channels" avconv video playback.
+  * Fixes: Fixed compiling webcamstudio (WSVideoDevice) Kernel module on 3.19 kernel.
+  * Fixes: Fixed "Only Video" Streams EOS never reached.
+  * Fixes: "Only Video" Movie Stream-Panel GUI.
+  * Fixes: Some operational commands in WS works only with Unicode UTF-8 encoding format.
+  * Fixes: Small fixes.
+  * Changes: Catalano Library partially upgraded to version 1.3/1.4.
+  * Changes: updated javaCv libraries to version 0.10.
+  * Changes: ReadNext SourceText & SourceImage changed condition.
+  * Changes: Enabled "Capture Screen Number" in StreamDesktop's SourceControls.
+  * Changes: Buffer from 50 to 20 to save up some memory.
+  * Changes: Icecast Gst command changed to vp8enc (webm) and to version 1.x.
+  * Changes: Enabled IPCam "Effects/Options" "Source Control Tab" to ba able to use MotionAlpha and FaceDetectorAlpha.
+  * Changes: DVB backend set to gstreamer 1.0 by Default.
+  * Changes: Updated webcamstudio module (WSVideoDevice) to version 1.1.2.
+  * Changes: Complete GUI redesign.
+  * Changes: Some code cleanup.
+  * Changes: Some code refactoring.
+  * Adds: Switch button to enable/disable automatic A/R detection.
+  * Adds: Scrolling speed switcher.
+  * Adds: Simple Timer Text overlay in Text Stream-Panel.
+  * Adds: Saved Studios remember Stream-Panels positions.
+  * Adds: gstreamer0.10-fluendo-mp3 and gstreamer1.0-fluendo-mp3 dependences for DVB-T playback.
+  * New upstream version
+
+ -- Karl Ellis <soylent.tv@gmail.com>  Tue, 19 May 2015 17:50:59 +0200
+
+webcamstudio (0.72) unstable; urgency=low
+
+  * Fixes: Stream Stop/Play operations volume do not stay muted if selected.
+  * Fixes: Some Streams have no alpha when an Effect apply.
+  * Fixes: Crop Effect can't get the correct width and height.
+  * Fixes: SourceImage - PNG - didn't get correct image size.
+  * Fixes: "Apply to Streams" operation get incorrect W & H values. Hope now it is fixed ...
+  * Fixes: "Apply to Streams" was applied to Sinks Streams also.
+  * Changes: Text Stream-Panel Text field changed to Text area.
+  * Changes: WebcamStudio Video Device - webcamstudio.c line 512 (Updated v4l2loopback.c to compile on >= 3.18 kernel)
+  * Changes: Stream-panel spins can accept only correct ranges.
+  * Adds: RevealRightNFade, RevealLeftNFade and Stretch Effects.
+  * Adds: Live Broadcast in the previewer. Preview Fader Control.
+  * Adds: Rudimental Aspect Ratio automatic detection for Movie/Image/Gifs/Webcams Streams only.
+  * Removes: Some Unused classes.
+  * New upstream version
+
+ -- Karl Ellis <soylent.tv@gmail.com>  Sun, 07 Dec 2014 22:16:30 +0100
+
+webcamstudio (0.71) unstable; urgency=low
+
+  * Fixes: Stream freeze if Stop is invoked on a paused stream activating a channel.
+  * Fixes: "Apply to Stream" Mixer Panel button doesn't set correctly the Height in all streams.
+  * Fixes: AutoDeactivate SkyCam on exit if active. (Thanks Ronnie Tucker)
+  * Changes: Cleanup Stream-Panels code and Avconv/FFmpeg command lines.
+  * Adds: Pause Symbol in iconified Sources.
+  * Adds: "WSAudioDevice" Sink Audio Device.
+  * New upstream version
+
+ -- Karl Ellis <soylent.tv@gmail.com>  Sat, 04 Oct 2014 17:20:09 +0200
+
+webcamstudio (0.70) unstable; urgency=low
+
+  * Fixes: Smalls and Major fixes. (https://code.google.com/p/webcamstudio/source/list)
+  * Changes: UI, some engine optimizations. (https://code.google.com/p/webcamstudio/source/list)
+  * Adds: See Builds log messages. (https://code.google.com/p/webcamstudio/source/list)
+  * Removes: See Builds log messages. (https://code.google.com/p/webcamstudio/source/list)
+  * New upstream version
+
+ -- Karl Ellis <soylent.tv@gmail.com>  Fri, 12 Sep 2014 18:41:30 +0200
+
+webcamstudio (0.65) unstable; urgency=low
+
+  * Fixes: Linux 3.11 webcamstudio-module fix.
+  * Changes: webcamstudio kernel module updated to the v0.8.0 of v4l2loopback
+  * New upstream version
+
+ -- Karl Ellis <soylent.tv@gmail.com>  Wed, 01 Jan 2014 12:30:41 +0100
+
+webcamstudio (0.64) unstable; urgency=low
+
+  * Fixes: Multiarch - Build-Depends-Indep to Build-Depends
+  * Removes: Conflicts entry with v4l2loopback-dkms
+  * New upstream version
+
+ -- PhobosK <phobosk@kbfx.net>  Fri, 05 Apr 2013 00:52:41 +0300
+
+webcamstudio (0.63) unstable; urgency=low
+
+  * Fixes: Missing libwebcamstudio helper module to webcamstudio
+  * Adds: start.gif splash to the java wrapper in webcamstudio
+  * New upstream version
+
+ -- PhobosK <phobosk@kbfx.net>  Wed, 03 Apr 2013 01:25:07 +0300
+
+webcamstudio (0.62) unstable; urgency=low
+
+  * New upstream version
+
+ -- PhobosK <phobosk@kbfx.net>  Mon, 25 Mar 2013 17:56:33 +0100
+
+webcamstudio (0.61) unstable; urgency=low
+
+  * New upstream version
+
+ -- PhobosK <phobosk@kbfx.net>  Fri, 22 Mar 2013 00:20:10 +0200
+
+webcamstudio (0.60) unstable; urgency=low
+
+  * Initial release
+
+ -- PhobosK <phobosk@kbfx.net>  Sun, 17 Mar 2013 14:06:25 +0200

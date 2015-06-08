@@ -1,0 +1,5 @@
+# Compulsory line, this is a version 3 file
+version=3
+
+# Download from googlecode.com
+http://sourceforge.net/projects/webcamstudio/files/latest/download webcamstudio_(.*)\.tar\.gz
