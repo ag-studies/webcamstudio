@@ -1,0 +1,31 @@
+# Key = Category
+# TAGS:
+# @CWIDTH : Capture Width
+# @CHEIGHT: Capture Height
+# @SEEK : Starting seek position
+# @FILE: source input file/device
+# @RATE: Frame rate
+# @VPORT: Port used for receiving video data
+# @APORT: Port used for receiving audio data
+# @URL: When an url is used instead of a file
+#
+# How to use:
+# The key must be "video/audio", tags are used to pass configurations to avconv/ffmpeg/gstreamer/dvgrab ...
+# It is important that sound frequency, channels and source rate match WebcamStudio. 
+# If you omit these tags for the TCP output, WebcamStudio may not be able to read from that source
+# Output must always be : rawvideo in RGB24 format for video.  Audio must be in s16be, two channels
+# Future version may be more flexible...
+# 
+# Drag'n drop this file in the source panel to add it as other media files.
+# You can also copy this file in "~/.webcamstudio/sources" so they will be loaded automatically when WebcamStudio starts
+#
+# There can be only one "source" for each file
+# The symbol "#" before the line will tell WS to ignore that line ...
+# Uncomment the key "video/audio" to specify if the source will use two separate command for video and audio or if the source is an only audio or an only video stream. For example a only audio stream will have key "audio" uncommented equals to the avconv/ffmpeg/gstreamer/dvgrab command and the key "video" commented. A stream that will only use one command for A/V will have the key "video" containing the entire A/V command uncommanted and the key "audio=" with "avconv -v 0" (null command) uncommented.
+
+video=dvgrab --buffers 1 --format raw - | ffmpeg -loglevel panic -f dv -i - -s @CWIDTHx@CHEIGHT -f rawvideo -vcodec rawvideo -pix_fmt rgb24 -r @RATE tcp://127.0.0.1:@VPORT -ar @FREQ -ac @CHANNELS -f s@BITSIZEbe tcp://127.0.0.1:@APORT
+
+#video=dvgrab --buffers 1 --format raw - | gst-launch-1.0 fdsrc fd=0 ! queue max-size-buffers=0 max-size-time=0 ! dvdemux name=d ! queue max-size-buffers=0 max-size-time=0 ! dvdec ! deinterlace method=linear ! videoconvert ! videoscale ! videorate ! video/x-raw, format=RGB, width=@CWIDTH, height=@CHEIGHT, framerate=@RATE/1 ! videoconvert ! tcpclientsink host=127.0.0.1 port=@VPORT sync=false d. ! queue max-size-buffers=0 max-size-time=0 ! audioresample ! audioconvert ! audio/x-raw, format=S16BE, channels=2, rate=@FREQ ! audioconvert ! tcpclientsink host=127.0.0.1 port=@APORT sync=false
+
+audio=avconv -v 0
+
