@@ -48,8 +48,10 @@ import java.util.prefs.Preferences;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import webcamstudio.WebcamStudio;
+import static webcamstudio.WebcamStudio.theme;
 import static webcamstudio.WebcamStudio.wsDistroWatch;
 import webcamstudio.channels.MasterChannels;
+import static webcamstudio.components.ChannelPanel.lblOnAir;
 import webcamstudio.exporter.vloopback.VideoDevice;
 import webcamstudio.externals.FME;
 import webcamstudio.externals.ProcessRenderer;
@@ -127,7 +129,8 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
         panelPixelFormat.setLayout(columLayout);
         panelDefaultOutputs.setLayout(columLayout);
         panelVirtualAudio.setLayout(columLayout);
-        panelVirtual.setLayout(columLayout);
+        panelVirtualC.setLayout(columLayout);
+        panelVirtualA.setLayout(columLayout); 
         panelDefault.setLayout(columLayout);
         panelFME.setLayout(columLayout);
         comboPixelFormat.setModel(new javax.swing.DefaultComboBoxModel(v4l2PixelFormats));
@@ -399,6 +402,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
                         labels.put(fme.getName(), label);
 //                        tglSkyCam.setEnabled(false);
                         ResourceMonitor.getInstance().addMessage(label);
+                        lblOnAir.setForeground(Color.RED);
                     } else {
                         fmeCount --;
                         button.setSelected(false);
@@ -423,6 +427,13 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
 ////                            tglSkyCam.setEnabled(true);
 //                        }
                         ResourceMonitor.getInstance().removeMessage(label);
+                        if (fmeCount == 0 && !udpOutState) {
+                            if (theme.equals("Dark")) {
+                                lblOnAir.setForeground(Color.WHITE);
+                            } else {
+                                lblOnAir.setForeground(Color.BLACK);
+                            }
+                        }
                     }
 //                    if (fmeCount == 0 && camCount == 0) {
 ////                        tglSkyCam.setEnabled(true);
@@ -538,10 +549,11 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
     private void initComponents() {
 
         outputTabs = new javax.swing.JTabbedPane();
-        panelVirtual = new javax.swing.JPanel();
+        panelVirtualC = new javax.swing.JPanel();
         panelPixelFormat = new javax.swing.JPanel();
         labelPixelFormat = new javax.swing.JLabel();
         comboPixelFormat = new javax.swing.JComboBox();
+        panelVirtualA = new javax.swing.JPanel();
         panelVirtualAudio = new javax.swing.JPanel();
         tglWSAudioDev = new javax.swing.JCheckBox();
         tglAudioOut = new javax.swing.JToggleButton();
@@ -550,20 +562,23 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
         tglRecordToFile = new javax.swing.JToggleButton();
         tglUDP = new javax.swing.JToggleButton();
         panelFME = new javax.swing.JPanel();
+        panelSetFME = new javax.swing.JPanel();
         btnAddFME = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("webcamstudio/Languages"); // NOI18N
         setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("OUTPUT"))); // NOI18N
         setToolTipText(bundle.getString("DROP_OUTPUT")); // NOI18N
-        setMinimumSize(new java.awt.Dimension(90, 100));
-        setPreferredSize(new java.awt.Dimension(150, 339));
+        setPreferredSize(new java.awt.Dimension(237, 393));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         outputTabs.setFont(new java.awt.Font("Noto Sans", 0, 11)); // NOI18N
+        outputTabs.setMaximumSize(new java.awt.Dimension(370, 32767));
+        outputTabs.setMinimumSize(new java.awt.Dimension(150, 98));
         outputTabs.setName("outputTabs"); // NOI18N
         // outputTabs.setFont(new java.awt.Font("Noto Sans", 0, 10));
 
-        panelVirtual.setName("panelVirtual"); // NOI18N
+        panelVirtualC.setName("panelVirtualC"); // NOI18N
 
         panelPixelFormat.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "WebcamStudio Virtual Cam", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Noto Sans", 0, 10))); // NOI18N
         panelPixelFormat.setName("panelPixelFormat"); // NOI18N
@@ -583,7 +598,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
                 .addGroup(panelPixelFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelPixelFormat)
                     .addComponent(comboPixelFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
         panelPixelFormatLayout.setVerticalGroup(
             panelPixelFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -593,6 +608,31 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
                 .addGap(0, 0, 0)
                 .addComponent(comboPixelFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        javax.swing.GroupLayout panelVirtualCLayout = new javax.swing.GroupLayout(panelVirtualC);
+        panelVirtualC.setLayout(panelVirtualCLayout);
+        panelVirtualCLayout.setHorizontalGroup(
+            panelVirtualCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 178, Short.MAX_VALUE)
+            .addGroup(panelVirtualCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelVirtualCLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelPixelFormat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        panelVirtualCLayout.setVerticalGroup(
+            panelVirtualCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 124, Short.MAX_VALUE)
+            .addGroup(panelVirtualCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelVirtualCLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(panelPixelFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        outputTabs.addTab("Webcam", panelVirtualC);
+
+        panelVirtualA.setName("panelVirtualA"); // NOI18N
 
         panelVirtualAudio.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "WebcamStudio Virtual Audio", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Noto Sans", 0, 10))); // NOI18N
         panelVirtualAudio.setName("panelVirtualAudio"); // NOI18N
@@ -624,52 +664,38 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
                 .addGroup(panelVirtualAudioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tglWSAudioDev, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tglAudioOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         panelVirtualAudioLayout.setVerticalGroup(
             panelVirtualAudioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelVirtualAudioLayout.createSequentialGroup()
                 .addComponent(tglAudioOut)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(tglWSAudioDev))
         );
 
-        javax.swing.GroupLayout panelVirtualLayout = new javax.swing.GroupLayout(panelVirtual);
-        panelVirtual.setLayout(panelVirtualLayout);
-        panelVirtualLayout.setHorizontalGroup(
-            panelVirtualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 514, Short.MAX_VALUE)
-            .addGroup(panelVirtualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelVirtualLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelPixelFormat, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
-                    .addContainerGap()))
-            .addGroup(panelVirtualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelVirtualLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelVirtualAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
+        javax.swing.GroupLayout panelVirtualALayout = new javax.swing.GroupLayout(panelVirtualA);
+        panelVirtualA.setLayout(panelVirtualALayout);
+        panelVirtualALayout.setHorizontalGroup(
+            panelVirtualALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelVirtualALayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelVirtualAudio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        panelVirtualLayout.setVerticalGroup(
-            panelVirtualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-            .addGroup(panelVirtualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelVirtualLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(panelPixelFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-            .addGroup(panelVirtualLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelVirtualLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(panelVirtualAudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+        panelVirtualALayout.setVerticalGroup(
+            panelVirtualALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelVirtualALayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelVirtualAudio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        outputTabs.addTab("VirtualCam", panelVirtual);
+        outputTabs.addTab("Audio", panelVirtualA);
 
         panelDefault.setName("panelDefault"); // NOI18N
 
-        panelDefaultOutputs.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Default Outputs", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Noto Sans", 0, 10))); // NOI18N
+        panelDefaultOutputs.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "WebcamStudio Default Outputs", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Noto Sans", 0, 10))); // NOI18N
         panelDefaultOutputs.setName("panelDefaultOutputs"); // NOI18N
 
         tglRecordToFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/media-record.png"))); // NOI18N
@@ -679,6 +705,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
         tglRecordToFile.setMinimumSize(new java.awt.Dimension(87, 21));
         tglRecordToFile.setName("tglRecordToFile"); // NOI18N
         tglRecordToFile.setPreferredSize(new java.awt.Dimension(300, 22));
+        tglRecordToFile.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/media-record.png"))); // NOI18N
         tglRecordToFile.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/media-playback-stop.png"))); // NOI18N
         tglRecordToFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -693,6 +720,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
         tglUDP.setMinimumSize(new java.awt.Dimension(237, 21));
         tglUDP.setName("tglUDP"); // NOI18N
         tglUDP.setPreferredSize(new java.awt.Dimension(300, 22));
+        tglUDP.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/media-record.png"))); // NOI18N
         tglUDP.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/media-playback-stop.png"))); // NOI18N
         tglUDP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -708,7 +736,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
                 .addGroup(panelDefaultOutputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tglUDP, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tglRecordToFile, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         panelDefaultOutputsLayout.setVerticalGroup(
             panelDefaultOutputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -723,16 +751,16 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
         panelDefault.setLayout(panelDefaultLayout);
         panelDefaultLayout.setHorizontalGroup(
             panelDefaultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 514, Short.MAX_VALUE)
+            .addGap(0, 178, Short.MAX_VALUE)
             .addGroup(panelDefaultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelDefaultLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(panelDefaultOutputs, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                    .addComponent(panelDefaultOutputs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         panelDefaultLayout.setVerticalGroup(
             panelDefaultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 124, Short.MAX_VALUE)
             .addGroup(panelDefaultLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelDefaultLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -743,6 +771,9 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
         outputTabs.addTab("Default", panelDefault);
 
         panelFME.setName("panelFME"); // NOI18N
+
+        panelSetFME.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "WebcamStudio FME", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Noto Sans", 0, 10))); // NOI18N
+        panelSetFME.setName("panelSetFME"); // NOI18N
 
         btnAddFME.setFont(new java.awt.Font("Noto Sans", 3, 12)); // NOI18N
         btnAddFME.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/list-add.png"))); // NOI18N
@@ -758,53 +789,56 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
             }
         });
 
+        javax.swing.GroupLayout panelSetFMELayout = new javax.swing.GroupLayout(panelSetFME);
+        panelSetFME.setLayout(panelSetFMELayout);
+        panelSetFMELayout.setHorizontalGroup(
+            panelSetFMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 144, Short.MAX_VALUE)
+            .addGroup(panelSetFMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelSetFMELayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(btnAddFME, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        panelSetFMELayout.setVerticalGroup(
+            panelSetFMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 79, Short.MAX_VALUE)
+            .addGroup(panelSetFMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelSetFMELayout.createSequentialGroup()
+                    .addGap(15, 15, 15)
+                    .addComponent(btnAddFME, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(29, Short.MAX_VALUE)))
+        );
+
         javax.swing.GroupLayout panelFMELayout = new javax.swing.GroupLayout(panelFME);
         panelFME.setLayout(panelFMELayout);
         panelFMELayout.setHorizontalGroup(
             panelFMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 514, Short.MAX_VALUE)
+            .addGap(0, 178, Short.MAX_VALUE)
             .addGroup(panelFMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelFMELayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(btnAddFME, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap()
+                    .addComponent(panelSetFME, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         panelFMELayout.setVerticalGroup(
             panelFMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 124, Short.MAX_VALUE)
             .addGroup(panelFMELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelFMELayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(btnAddFME, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap()
+                    .addComponent(panelSetFME, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
 
         outputTabs.addTab("FME", panelFME);
 
+        add(outputTabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 31, 190, -1));
+
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("FMEs");
         jLabel1.setName("jLabel1"); // NOI18N
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(190, 190, 190)
-                .addComponent(outputTabs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(641, 641, 641))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(152, 152, 152)
-                .addComponent(outputTabs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1))
-        );
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 203, 203, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -910,6 +944,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
             ResourceMonitorLabel label = new ResourceMonitorLabel(System.currentTimeMillis()+10000, "Unicast mpeg2 to udp://127.0.0.1:7000");
             labels.put("UDPOut", label);
             ResourceMonitor.getInstance().addMessage(label);
+            lblOnAir.setForeground(Color.RED);
         } else {
             udpOutState = false;
             SinkUDP udpStream = udpOut.get("UDPOut");
@@ -919,6 +954,13 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
                 udpOut.remove("UDPOut");
                 ResourceMonitorLabel label = labels.get("UDPOut");
                 ResourceMonitor.getInstance().removeMessage(label);
+            }
+            if (fmeCount == 0) {
+                if (theme.equals("Dark")) {
+                    lblOnAir.setForeground(Color.WHITE);
+                } else {
+                    lblOnAir.setForeground(Color.BLACK);
+                }
             }
         }
     }//GEN-LAST:event_tglUDPActionPerformed
@@ -1508,8 +1550,10 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
     private javax.swing.JPanel panelDefaultOutputs;
     private javax.swing.JPanel panelFME;
     private javax.swing.JPanel panelPixelFormat;
-    private javax.swing.JPanel panelVirtual;
+    private javax.swing.JPanel panelSetFME;
+    private javax.swing.JPanel panelVirtualA;
     private javax.swing.JPanel panelVirtualAudio;
+    private javax.swing.JPanel panelVirtualC;
     private javax.swing.JToggleButton tglAudioOut;
     private javax.swing.JToggleButton tglRecordToFile;
     final OutputPanel instanceSink = this;

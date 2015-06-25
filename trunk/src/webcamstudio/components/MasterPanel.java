@@ -62,7 +62,7 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
     boolean lockRatio = false;
     private BufferedImage liveImg = null;
     int opacity = 75;
-    
+    public static float masterVolume = 0f;
     
     /** Creates new form MasterPanel */
     public MasterPanel() {
@@ -116,6 +116,9 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         btnFullScreen = new javax.swing.JButton();
         tglLockRatio = new javax.swing.JToggleButton();
         tglSound = new javax.swing.JToggleButton();
+        sldMasterVolume = new javax.swing.JSlider();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         panPreview = new javax.swing.JPanel();
         btnPreview = new javax.swing.JButton();
         lblHeight2 = new javax.swing.JLabel();
@@ -125,9 +128,9 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         jLabel1 = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("LiVE View"));
-        setMaximumSize(new java.awt.Dimension(258, 400));
-        setMinimumSize(new java.awt.Dimension(258, 380));
-        setPreferredSize(new java.awt.Dimension(258, 400));
+        setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        setMinimumSize(new java.awt.Dimension(273, 380));
+        setPreferredSize(new java.awt.Dimension(273, 400));
         setLayout(new java.awt.BorderLayout());
 
         panelPreview.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
@@ -159,6 +162,7 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         tabMixers.setPreferredSize(new java.awt.Dimension(257, 300));
 
         panMixer.setName("panMixer"); // NOI18N
+        panMixer.setPreferredSize(new java.awt.Dimension(251, 216));
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("webcamstudio/Languages"); // NOI18N
         lblWidth.setText(bundle.getString("WIDTH")); // NOI18N
@@ -211,7 +215,7 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         });
 
         tglLockRatio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/LockButton-open_small.png"))); // NOI18N
-        tglLockRatio.setText(" Aspect Ratio");
+        tglLockRatio.setText("A/R");
         tglLockRatio.setToolTipText("Lock Mixer Aspect Ratio");
         tglLockRatio.setName("tglLockRatio"); // NOI18N
         tglLockRatio.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/LockButton-open_small.png"))); // NOI18N
@@ -231,6 +235,27 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
             }
         });
 
+        sldMasterVolume.setMajorTickSpacing(50);
+        sldMasterVolume.setMinimum(-100);
+        sldMasterVolume.setMinorTickSpacing(10);
+        sldMasterVolume.setPaintTicks(true);
+        sldMasterVolume.setSnapToTicks(true);
+        sldMasterVolume.setToolTipText("WS Master Volume");
+        sldMasterVolume.setValue(0);
+        sldMasterVolume.setName("sldMasterVolume"); // NOI18N
+        sldMasterVolume.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sldMasterVolumeStateChanged(evt);
+            }
+        });
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/volume_icon_25.png"))); // NOI18N
+        jLabel3.setName("jLabel3"); // NOI18N
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("0");
+        jLabel2.setName("jLabel2"); // NOI18N
+
         javax.swing.GroupLayout panMixerLayout = new javax.swing.GroupLayout(panMixer);
         panMixer.setLayout(panMixerLayout);
         panMixerLayout.setHorizontalGroup(
@@ -245,46 +270,63 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
                             .addComponent(lblHeight))
                         .addGap(14, 14, 14)
                         .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(spinFPS, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                            .addComponent(spinHeight)
-                            .addComponent(spinWidth)))
-                    .addComponent(btnApplyToStreams, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panMixerLayout.createSequentialGroup()
-                        .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tglLockRatio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnApply, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(spinFPS)
+                            .addGroup(panMixerLayout.createSequentialGroup()
+                                .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(spinHeight, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(spinWidth, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(14, 14, 14)
+                                .addComponent(tglLockRatio, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))))
+                    .addGroup(panMixerLayout.createSequentialGroup()
+                        .addComponent(btnFullScreen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnFullScreen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tglSound, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(tglSound, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panMixerLayout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(sldMasterVolume, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panMixerLayout.createSequentialGroup()
+                        .addComponent(btnApply, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnApplyToStreams, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panMixerLayout.setVerticalGroup(
             panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panMixerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(spinWidth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblWidth))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(spinHeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblHeight))
+                .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panMixerLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(spinWidth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblWidth))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(spinHeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblHeight)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panMixerLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(tglLockRatio)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(spinFPS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblHeight1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tglLockRatio, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tglSound, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnApply, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tglSound, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFullScreen, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnApplyToStreams, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69))
+                .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(sldMasterVolume, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panMixerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnApplyToStreams, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnApply, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         tabMixers.addTab(bundle.getString("MIXER"), panMixer); // NOI18N
@@ -336,7 +378,7 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         panelPreviewer.add(lblCurtainPre, java.awt.BorderLayout.CENTER);
 
         panPreview.add(panelPreviewer);
-        panelPreviewer.setBounds(0, 28, 230, 121);
+        panelPreviewer.setBounds(0, 28, 244, 121);
 
         jslOpacity.setName("jslOpacity"); // NOI18N
         jslOpacity.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -628,6 +670,20 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
         opacity = jslOpacity.getValue();
     }//GEN-LAST:event_jslOpacityStateChanged
 
+    private void sldMasterVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldMasterVolumeStateChanged
+        Object value = sldMasterVolume.getValue();
+        float v = 0;
+        String volText = "0";
+        if (value instanceof Float){
+            v = (Float)value;
+        } else if (value instanceof Integer){
+            v = ((Number)value).floatValue();
+            volText = value.toString();
+        }
+        jLabel2.setText(volText);
+        masterVolume = v/100f;
+    }//GEN-LAST:event_sldMasterVolumeStateChanged
+
     /**
      *
      * @param evt
@@ -664,6 +720,8 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
     private javax.swing.JButton btnFullScreen;
     private javax.swing.JButton btnPreview;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JSlider jslOpacity;
     private javax.swing.JLabel lblCurtain;
     private javax.swing.JLabel lblCurtainPre;
@@ -675,6 +733,7 @@ public class MasterPanel extends javax.swing.JPanel implements MasterMixer.SinkL
     private javax.swing.JPanel panPreview;
     private javax.swing.JPanel panelPreview;
     private javax.swing.JPanel panelPreviewer;
+    private javax.swing.JSlider sldMasterVolume;
     public static javax.swing.JSpinner spinFPS;
     public static javax.swing.JSpinner spinHeight;
     public static javax.swing.JSpinner spinWidth;

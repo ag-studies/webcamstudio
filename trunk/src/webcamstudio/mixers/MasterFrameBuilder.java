@@ -36,6 +36,7 @@ import java.util.concurrent.Future;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static webcamstudio.components.MasterPanel.masterVolume;
 import webcamstudio.streams.SourceDesktop;
 import webcamstudio.streams.Stream;
 import static webcamstudio.util.Tools.sleep;
@@ -124,7 +125,12 @@ public class MasterFrameBuilder implements Runnable {
                 ShortBuffer buffer = wrap(data).asShortBuffer();
                 outputBuffer.rewind();
                 while (buffer.hasRemaining()) {
-                    float mix = buffer.get() * f.getVolume();
+//                    System.out.println("Volume="+f.getVolume());
+                    float volume = f.getVolume() + masterVolume;
+                    if (volume < 0) {
+                        volume = 0;
+                    }
+                    float mix = buffer.get() * (volume);
                     outputBuffer.mark();
                     if (outputBuffer.position()< outputBuffer.limit()){ //25fps IOException                     
                         mix += outputBuffer.get();
