@@ -10,6 +10,7 @@
  */
 package webcamstudio.components;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -28,6 +29,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSpinner;
 import javax.swing.JToggleButton;
 import webcamstudio.WebcamStudio;
+import static webcamstudio.WebcamStudio.theme;
 import webcamstudio.channels.MasterChannels;
 import webcamstudio.mixers.PrePlayer;
 import webcamstudio.mixers.SystemPlayer;
@@ -285,6 +287,7 @@ public class ChannelPanel extends javax.swing.JPanel implements WebcamStudio.Lis
         tglRemote = new javax.swing.JToggleButton();
         btnStopOnlyStream = new javax.swing.JButton();
         PanelResource = new javax.swing.JPanel();
+        lblOnAir = new javax.swing.JLabel();
 
         lstChannelsScroll.setName("lstChannelsScroll"); // NOI18N
 
@@ -508,6 +511,12 @@ public class ChannelPanel extends javax.swing.JPanel implements WebcamStudio.Lis
         PanelResource.setName("PanelResource"); // NOI18N
         PanelResource.setLayout(new java.awt.BorderLayout());
 
+        lblOnAir.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        lblOnAir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblOnAir.setText("ON AIR");
+        lblOnAir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblOnAir.setName("lblOnAir"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -517,7 +526,8 @@ public class ChannelPanel extends javax.swing.JPanel implements WebcamStudio.Lis
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(PanelResource, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblOnAir, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -605,7 +615,9 @@ public class ChannelPanel extends javax.swing.JPanel implements WebcamStudio.Lis
                         .addComponent(btnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lstChannelsScroll))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(PanelResource, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PanelResource, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblOnAir, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -754,6 +766,11 @@ public class ChannelPanel extends javax.swing.JPanel implements WebcamStudio.Lis
         CHTimers.clear();
         StopCHTimer.setEnabled(false);
         ChDuration.setValue(0);
+        if (theme.equals("Dark")) {
+            lblOnAir.setForeground(Color.WHITE);
+        } else {
+            lblOnAir.setForeground(Color.BLACK);
+        }
     }
 
     class UpdateCHtUITask extends TimerTask {
@@ -1380,6 +1397,7 @@ public class ChannelPanel extends javax.swing.JPanel implements WebcamStudio.Lis
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblChName;
+    public static javax.swing.JLabel lblOnAir;
     private static javax.swing.JList lstChannels;
     private javax.swing.JScrollPane lstChannelsScroll;
     private javax.swing.JComboBox lstNextChannel;
