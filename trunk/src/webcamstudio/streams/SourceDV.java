@@ -4,6 +4,7 @@
  */
 package webcamstudio.streams;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import webcamstudio.externals.ProcessRenderer;
 import webcamstudio.mixers.Frame;
@@ -23,25 +24,26 @@ public class SourceDV extends Stream {
 
     public SourceDV() {
         super();
-        if (this.getChName() != null){
-        name = this.getChName();
+        if (this.getChName() != null) {
+            name = this.getChName();
         } else {
-        name = "DVCam";  
+            name = "DVCam";
         }
         rate = MasterMixer.getInstance().getRate();
     }
 
     @Override
-    public void read() {      
-        if (getPreView()){
+    public void read() {
+        capture = new ProcessRenderer(this, ProcessRenderer.ACTION.CAPTURE, "DV", comm);
+        capture.readCustom();
+        lastPreview = new BufferedImage(captureWidth, captureHeight, BufferedImage.TYPE_INT_ARGB);
+        isPlaying = true;
+
+        if (getPreView()) {
             PreviewFrameBuilder.register(this);
         } else {
             MasterFrameBuilder.register(this);
         }
-        capture = new ProcessRenderer(this, ProcessRenderer.ACTION.CAPTURE, "DV", comm);
-        capture.readCustom();
-        lastPreview = new BufferedImage(captureWidth,captureHeight,BufferedImage.TYPE_INT_ARGB);
-        isPlaying = true;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class SourceDV extends Stream {
         isPaused = true;
         capture.pause();
     }
-    
+
     @Override
     public void stop() {
         for (int fx = 0; fx < this.getEffects().size(); fx++) {
@@ -61,7 +63,7 @@ public class SourceDV extends Stream {
             }
         }
         isPlaying = false;
-        if (getPreView()){
+        if (getPreView()) {
             PreviewFrameBuilder.unregister(this);
         } else {
             MasterFrameBuilder.unregister(this);
@@ -93,7 +95,7 @@ public class SourceDV extends Stream {
 
     @Override
     public Frame getFrame() {
-        
+
         return nextFrame;
     }
     @Override
@@ -119,13 +121,17 @@ public class SourceDV extends Stream {
         if (capture != null) {
             f = capture.getFrame();
             if (f != null) {
-                BufferedImage img = f.getImage(); 
+                BufferedImage img = f.getImage();
                 applyEffects(img);
             }
             if (f != null) {
                 setAudioLevel(f);
-                lastPreview.getGraphics().drawImage(f.getImage(), 0, 0, null);
-                nextFrame=f;
+
+                Graphics g = lastPreview.getGraphics();
+                g.drawImage(f.getImage(), 0, 0, null);
+                g.dispose();
+
+                nextFrame = f;
             }
         }
     }
