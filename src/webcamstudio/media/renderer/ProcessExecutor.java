@@ -143,7 +143,6 @@ public class ProcessExecutor {
     }
 
     public void executeString(String params) throws IOException, InterruptedException {
-
         process = rt.exec(params);
 //        System.out.println("Process: "+process);
         processRunning = true;

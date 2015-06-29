@@ -16,25 +16,25 @@ import webcamstudio.sources.effects.Effect;
  *
  * @author karl
  */
-public class SourceDV extends Stream {
+public class SourceHDV extends Stream {
 
     ProcessRenderer capture = null;
     BufferedImage lastPreview = null;
     boolean isPlaying = false;
 
-    public SourceDV() {
+    public SourceHDV() {
         super();
         if (this.getChName() != null) {
             name = this.getChName();
         } else {
-            name = "DVCam";
+            name = "HDVCam";
         }
         rate = MasterMixer.getInstance().getRate();
     }
 
     @Override
     public void read() {
-        capture = new ProcessRenderer(this, ProcessRenderer.ACTION.CAPTURE, "DV", comm);
+        capture = new ProcessRenderer(this, ProcessRenderer.ACTION.CAPTURE, "HDV", comm);
         capture.readCustom();
         lastPreview = new BufferedImage(captureWidth, captureHeight, BufferedImage.TYPE_INT_ARGB);
         isPlaying = true;
@@ -104,7 +104,7 @@ public class SourceDV extends Stream {
 
     @Override
     public boolean hasAudio() {
-        return true;
+        return false;
     }
 
     @Override

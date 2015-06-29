@@ -17,12 +17,24 @@ import webcamstudio.sources.effects.Effect;
 /**
  *
  * @author patrick (modified by karl)
+ *
+ * Stream is the top-level interface used for different kinds of video or audio sources.
+ * A set of active streams is maintained by MasterFrameBuilder, which
+ * uses the streams' Callable interface to fetch new video and/or
+ * audio data.
  */
-public abstract class Stream implements Callable<Frame>{
+public abstract class Stream implements Callable<Frame> {
 
+    /* FIXME: Stream.getInstance(file) is an abstract factory for
+     * producing different kinds of streams from a filename.
+     * But the name getInstance() is usually used for accessing a
+     * singleton or instance pool, not for constructing a new
+     * instance.
+     * This should probably be renamed. ---GEC */
     public static Stream getInstance(File file) {
         Stream stream = null;
         String ext = file.getName().toLowerCase().trim();
+
         if (ext.endsWith(".avi")
                 || ext.endsWith(".ogg")
                 || ext.endsWith(".ogv")
@@ -52,9 +64,9 @@ public abstract class Stream implements Callable<Frame>{
                 || ext.endsWith(".m4a")
                 || ext.endsWith(".mp2")) {
             stream = new SourceMusic(file);
-        } else if (ext.endsWith(".wss")){
+        } else if (ext.endsWith(".wss")) {
             stream = new SourceCustom(file);
-        } else if (ext.startsWith("/dev/video")){
+        } else if (ext.startsWith("/dev/video")) {
             stream = new SourceWebcam(file);
         }
         return stream;
@@ -86,19 +98,7 @@ public abstract class Stream implements Callable<Frame>{
     protected ArrayList<SourceChannel> channels = new ArrayList<>();
     protected String gsEffect = "";
     protected SourceChannel channel = new SourceChannel();
-    protected String desktopN = "0";
-    protected int deskN = 0;
-    protected int desktopX = 0;
-    protected int desktopY = 0;
-    protected int desktopW = 0;
-    protected int desktopH = 0;
-    protected int windowX = 0;
-    protected int windowY = 0;
-    protected int windowW = 0;
-    protected int windowH = 0;
-    protected String desktopXid = "";
-    protected String elementXid = "";
-    protected boolean singleWindow = false;
+
     protected boolean hasVideo=true;
     protected boolean hasFakeVideo=false;
     protected boolean hasFakeAudio=false;
@@ -214,7 +214,7 @@ public abstract class Stream implements Callable<Frame>{
         this.duration = dur;
     }
 
-    public void setPlayList (boolean b) {
+    public void setPlayList(boolean b) {
         isPlayList = b;
     }
 
@@ -342,164 +342,179 @@ public abstract class Stream implements Callable<Frame>{
         return bandwidthDVB;
     }
 
+    /* SourceDesktop-specific operations
+       The following data accessors are used only for
+       SourceDesktop. The corresponding data members were moved to
+       that class and the accessors ultimately should be as well.
+
+       Probably the main obstacle to that move is in ProcessRender's
+       command parameter substitution. That could be resolved by
+       providing a more general mechanism for Stream classes to
+       publish their supported command parameters.
+
+       (Many of the accessors in Stream are specific to some child
+       class; those should be moved out as well for the sake
+       of clarity.)   ---GEC */
     public String getDesktopN() {
-        return desktopN;
+        return "";
     }
 
     public void setDesktopN(String desktopN) {
-        this.desktopN = desktopN;
+        throw new UnsupportedOperationException();
     }
 
     public int getDeskN() {
-        return deskN;
+        return 0;
     }
 
     public void setDeskN(int desktopN) {
-        this.deskN = desktopN;
+        throw new UnsupportedOperationException();
     }
 
     public int getDesktopX() {
-        return desktopX;
+        return 0;
     }
 
     public String getDesktopXid() {
-        return desktopXid;
+        return "";
     }
 
     public void setDesktopXid(String dXid) {
-        this.desktopXid = dXid;
+        throw new UnsupportedOperationException();
     }
 
     public String getElementXid() {
-        return elementXid;
+        return "";
     }
 
     public void setElementXid(String eXid) {
-        this.elementXid = eXid;
+        throw new UnsupportedOperationException();
     }
 
     public boolean getSingleWindow() {
-        return singleWindow;
+        return false;
     }
 
     public void setSingleWindow(boolean sWin) {
-        this.singleWindow = sWin;
+        throw new UnsupportedOperationException();
     }
 
     /**
      * @param desktopX the desktopX to set
      */
     public void setDesktopX(int desktopX) {
-        this.desktopX = desktopX;
+        throw new UnsupportedOperationException();
     }
 
     /**
      * @return the desktopY
      */
     public int getDesktopY() {
-        return desktopY;
+        return 0;
     }
 
     /**
      * @param desktopY the desktopY to set
      */
     public void setDesktopY(int desktopY) {
-        this.desktopY = desktopY;
+        throw new UnsupportedOperationException();
     }
 
-    public int getDesktopEndX(){
-        return desktopX + desktopW - 1;
+    public int getDesktopEndX() {
+        return 0;
     }
 
-    public int getDesktopEndY(){
-        return desktopY + desktopH - 1;
+    public int getDesktopEndY() {
+        return 0;
     }
 
     /**
      * @return the desktopW
      */
     public int getDesktopW() {
-        return desktopW;
+        return 0;
     }
 
     /**
      * @param desktopW the desktopW to set
      */
     public void setDesktopW(int desktopW) {
-        this.desktopW = desktopW;
+        throw new UnsupportedOperationException();
     }
 
     /**
      * @return the desktopH
      */
     public int getDesktopH() {
-        return desktopH;
+        return 0;
     }
 
     /**
      * @param desktopH the desktopH to set
      */
     public void setDesktopH(int desktopH) {
-        this.desktopH = desktopH;
+        throw new UnsupportedOperationException();
     }
 
     public void setWindowX(int windowX) {
-        this.windowX = windowX;
+        throw new UnsupportedOperationException();
     }
 
     public int getWindowX() {
-        return this.windowX;
+        return 0;
     }
 
     /**
      * @param windowY
      */
     public void setWindowY(int windowY) {
-        this.windowY = windowY;
+        throw new UnsupportedOperationException();
     }
 
     /**
      * @return the desktopY
      */
     public int getWindowY() {
-        return this.windowY;
+        return 0;
     }
 
-    public int getWindowEndX(){
-        return windowX + windowW - 1;
+    public int getWindowEndX() {
+        return 0;
     }
 
-    public int getWindowEndY(){
-        return windowY + windowH - 1;
+    public int getWindowEndY() {
+        return 0;
     }
 
     /**
      * @return the desktopW
      */
     public int getWindowW() {
-        return windowW;
+        return 0;
     }
 
     /**
      * @param windowW
      */
     public void setWindowW(int windowW) {
-        this.windowW = windowW;
+        throw new UnsupportedOperationException();
     }
 
     /**
      * @return the desktopH
      */
     public int getWindowH() {
-        return windowH;
+        return 0;
     }
 
     /**
      * @param windowH
      */
     public void setWindowH(int windowH) {
-        this.windowH = windowH;
+        throw new UnsupportedOperationException();
     }
+    /* SourceDesktop-specific operations END */
+
 
     public void setLoop (boolean sLoop) {
         loop = sLoop;
@@ -518,15 +533,18 @@ public abstract class Stream implements Callable<Frame>{
             listener.sourceUpdated(this);
         }
     }
-    public void updatePreview(){
+
+    public void updatePreview() {
         if (listener != null) {
             listener.updatePreview(this.getPreview());
         }
     }
+
     public void destroy() {
         stop();
         MasterChannels.getInstance().unregister(this);
     }
+
     public void updateContent(String content) {
     }
 
@@ -574,7 +592,7 @@ public abstract class Stream implements Callable<Frame>{
 
     public abstract void readNext();
 
-    public boolean hasAudio(){
+    public boolean hasAudio() {
         return hasAudio;
     }
 
@@ -597,6 +615,7 @@ public abstract class Stream implements Callable<Frame>{
     public boolean isRTMP() {
         return isRTMP;
     }
+
     public void unRegister() {
             PreviewFrameBuilder.unregister(this);
     }
@@ -628,7 +647,7 @@ public abstract class Stream implements Callable<Frame>{
         hasVideo = setHasVideo;
     }
 
-    public boolean hasVideo(){
+    public boolean hasVideo() {
         return hasVideo;
     }
 
@@ -636,7 +655,7 @@ public abstract class Stream implements Callable<Frame>{
         more = setMo;
     }
 
-    public boolean getMore(){
+    public boolean getMore() {
         return more;
     }
 
@@ -644,7 +663,7 @@ public abstract class Stream implements Callable<Frame>{
         sliders = setSl;
     }
 
-    public boolean getSliders(){
+    public boolean getSliders() {
         return sliders;
     }
 
@@ -652,7 +671,7 @@ public abstract class Stream implements Callable<Frame>{
         panelType = sPanelType;
     }
 
-    public String getPanelType(){
+    public String getPanelType() {
         return panelType;
     }
 
@@ -660,7 +679,7 @@ public abstract class Stream implements Callable<Frame>{
         streamTime = sStreamTime;
     }
 
-    public String getStreamTime(){
+    public String getStreamTime() {
         return streamTime;
     }
 
@@ -668,7 +687,7 @@ public abstract class Stream implements Callable<Frame>{
         audioSource = sAS;
     }
 
-    public String getAudioSource(){
+    public String getAudioSource() {
         return audioSource;
     }
 
@@ -676,24 +695,24 @@ public abstract class Stream implements Callable<Frame>{
         guid = sGid;
     }
 
-    public String getGuid(){
+    public String getGuid() {
         return guid;
     }
 
-    public boolean needSeekCTRL(){
+    public boolean needSeekCTRL() {
         needSeekCTRL = needSeek();
         return needSeekCTRL;
     }
 
-    public boolean hasFakeVideo(){
+    public boolean hasFakeVideo() {
         return hasFakeVideo;
     }
 
-    public boolean hasFakeAudio(){
+    public boolean hasFakeAudio() {
         return hasFakeAudio;
     }
 
-    public void setVideo(boolean hasIt){
+    public void setVideo(boolean hasIt) {
         hasVideo=hasIt;
     }
 
@@ -705,7 +724,7 @@ public abstract class Stream implements Callable<Frame>{
         hasFakeAudio=hasIt;
     }
 
-    public void setAudio(boolean hasIt){
+    public void setAudio(boolean hasIt) {
         hasAudio = hasIt;
     }
 
@@ -1055,12 +1074,10 @@ public abstract class Stream implements Callable<Frame>{
     }
 
     public interface chListener {
-
         public void loadingPostOP();
     }
 
     public interface Listener {
-
         public void sourceUpdated(Stream stream);
 
         public void updatePreview(BufferedImage image);
