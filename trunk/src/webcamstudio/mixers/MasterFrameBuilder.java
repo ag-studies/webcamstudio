@@ -88,8 +88,12 @@ public class MasterFrameBuilder implements Runnable {
     }
 
     private void mixImages(Collection<Frame> frames, Frame targetFrame) {
+        // This is sort of a hack to allow multiple frames to have the same ZOrder...
+        // It drives me nuts when I activate a source and it makes another one with the same Z-Order disappear...   ---GEC
+        int count = 0;
         for (Frame f : frames) {
-            orderedFrames.put(f.getZOrder(), f);
+            orderedFrames.put(((f.getZOrder() * 128) + count), f);
+            count++;
         }
 
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
