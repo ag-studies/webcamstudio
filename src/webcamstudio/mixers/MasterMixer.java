@@ -29,11 +29,11 @@ public class MasterMixer {
     private int audioLevelLeft = 0;
     private int audioLevelRight = 0;
     private float avgFPS = 0;
-    
+
     private MasterMixer(){
         listeners = new ArrayList<>();
     }
-    
+
     /**
      * @return the audioLevelLeft
      */
@@ -86,7 +86,7 @@ public class MasterMixer {
 
     public void start() {
         builder = new MasterFrameBuilder(width,height,frameRate);
-        new Thread(builder).start();
+        new Thread(builder, "MasterFrameBuilder").start();
     }
 
     public void stop() {
@@ -117,7 +117,7 @@ public class MasterMixer {
                     audioLevelLeft = tempValue;
                 }
                 tempValue = (data[i + 2]<<8 & (data[i + 3]))/256;
-               
+
                 if (tempValue<0){
                     tempValue *=-1;
                 }

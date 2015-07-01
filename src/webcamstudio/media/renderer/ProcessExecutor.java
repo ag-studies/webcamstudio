@@ -95,6 +95,10 @@ public class ProcessExecutor {
         this.name = gName;
     }
 
+    public InputStream getInputStream() {
+        return process.getInputStream();
+    }
+
     private void readOutput(final Process p){
         new Thread(new Runnable() {
 

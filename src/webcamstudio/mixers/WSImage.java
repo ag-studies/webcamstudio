@@ -6,7 +6,7 @@ package webcamstudio.mixers;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.DataInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import static java.lang.System.arraycopy;
 
@@ -49,11 +49,15 @@ public class WSImage extends BufferedImage {
         }
     }
 
-    public void readFully(DataInputStream din) throws IOException {
-        if (din.available() > 0) {
-            din.readFully(byteData);
-            convertByte(byteData);
+    public void readFully(InputStream din) throws IOException {
+        int readCount = 0;
+
+        while (readCount < byteData.length) {
+            int readResult = din.read(byteData, readCount, (byteData.length - readCount));
+            readCount += readResult;
         }
+        //din.readFully(byteData);
+        convertByte(byteData);
     }
 
     public byte[] getBytes() {

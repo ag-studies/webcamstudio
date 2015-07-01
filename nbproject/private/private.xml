@@ -3,7 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/externals/linux/sources/DV.properties</file>
+            <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/mixers/MasterFrameBuilder.java</file>
+            <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/mixers/WSImage.java</file>
+            <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/mixers/Frame.java</file>
+            <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/streams/Stream.java</file>
+            <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/streams/SourceDV.java</file>
             <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/components/OutputPanel.java</file>
+            <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/streams/SourceWebcam.java</file>
+            <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/media/renderer/Capturer.java</file>
+            <file>file:/home/tetsujin/src/webcamstudio/src/webcamstudio/externals/ProcessRenderer.java</file>
         </group>
     </open-files>
 </project-private>
