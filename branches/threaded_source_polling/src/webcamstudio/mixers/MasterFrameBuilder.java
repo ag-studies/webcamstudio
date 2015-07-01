@@ -174,66 +174,41 @@ public class MasterFrameBuilder implements Runnable {
         mark = System.currentTimeMillis();
         int r = MasterMixer.getInstance().getRate();
         long frameDelay = 1000 / r;
-        long timeCode = currentTimeMillis();
+        int frameDelayMod = 1000 % r;
         long frameNum = 0;
+        int frameDelayAccumulator = 0;
+        long prevFrameStart = 0;
         while (!stopMe) {
-            timeCode += frameDelay;
+            while (currentTimeMillis() < (prevFrameStart + frameDelay)) {}
+
+            long frameStartTime = currentTimeMillis();
             Frame targetFrame = frameBuffer.getFrameToUpdate();
             frames.clear();
 
             long captureTime = 0;
-            long captureStartTime = System.nanoTime();
 
-            // threaded capture mode runs frame capture for each source in a different thread
-            // In principle it should be better but the overhead of threading appears to be more trouble than it's worth.
-            boolean threadedCaptureMode = true;
-            ExecutorService pool = newCachedThreadPool();
-            if (threadedCaptureMode) {
-                ArrayList<Future<Frame>> resultsT = new ArrayList<>();
+            for (int i = 0; i < streams.size(); i++) {
+                Frame f;
 
                 try {
-                    resultsT = ((ArrayList)pool.invokeAll(streams, 5, SECONDS));
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MasterFrameBuilder.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                ArrayList<Future<Frame>> results = resultsT;
+                    Stream s = streams.get(i);
+                    f = s.call();
 
-                int i=0;
-                Frame f;
-                for (Future stream : results) {
-                    try {
-                        f = (Frame)stream.get();
-
-                        if (f != null) {
-                            frames.add(f);
-                        }
-                    } catch (CancellationException | InterruptedException | ExecutionException ex) {
-                        Logger.getLogger(MasterFrameBuilder.class.getName()).log(Level.SEVERE, null, ex);
+                    // Due to race conditions when sources start up, a source may not really be ready to operate by the time it's active in MasterFrameBuilder. (Ultimately that should probably be fixed)
+                    // For that reason, we guard against (f == null) here, so streams
+                    if (f != null) {
+                        frames.add(f);
                     }
                 }
-            } else {
-                for (int i = 0; i < streams.size(); i++) {
-                    Frame f;
-
-                    try {
-                        Stream s = streams.get(i);
-                        f = s.call();
-
-                        // Due to race conditions when sources start up, a source may not really be ready to operate by the time it's active in MasterFrameBuilder. (Ultimately that should probably be fixed)
-                        // For that reason, we guard against (f == null) here, so streams
-                        if (f != null) {
-                            frames.add(f);
-                        }
-                    }
-                    catch (Exception e)
-                    {}
-                }
+                catch (Exception e)
+                {}
             }
 
             long now = currentTimeMillis();
-            captureTime = (now - captureStartTime);
+            captureTime = (now - frameStartTime);
 
-            long sleepTime = (timeCode - now);
+            long sleepTime = (frameStartTime + frameDelay + (frameDelayAccumulator / r) - now);
+            frameDelayAccumulator = ((frameDelayAccumulator % r) + frameDelayMod);
 
             // Drop frames if we're running behind - but no more than half of them
             if ((sleepTime > 0) || ((frameNum % 2) != 0)) {

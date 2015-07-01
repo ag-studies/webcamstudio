@@ -480,7 +480,7 @@ public class ProcessRenderer {
 
             @Override
             public void run() {
-                capture = new Capturer(stream);
+                capture = new Capturer(stream, null, null);
                 String cmdVideo = "";
                 String cmdAudio = "";
                 if (stream.hasVideo()) {
@@ -580,7 +580,7 @@ public class ProcessRenderer {
                 if (stream.isIPCam()) {
                     stream.setVideo(true);
                 }
-                capture = new Capturer(stream);
+                capture = new Capturer(stream, null, null);
 
                 if (stream.isOnlyAudio()) {
                     processVideo = null;
@@ -702,8 +702,8 @@ public class ProcessRenderer {
                 }
                 System.out.println("CommandVideo: "+commandVideo);
                 System.out.println("CommandAudio: "+commandAudio);
-                File fileV=new File(userHomeDir + "/.webcamstudio/WSUVid" + iD + ".sh");
-                File fileA=new File(userHomeDir + "/.webcamstudio/WSUAud" + iD + ".sh");
+                File fileV = new File(userHomeDir + "/.webcamstudio/WSUVid" + iD + ".sh");
+                File fileA = new File(userHomeDir + "/.webcamstudio/WSUAud" + iD + ".sh");
 
                 FileOutputStream fosV;
                 Writer dosV = null;
@@ -759,7 +759,7 @@ public class ProcessRenderer {
                 stream.setFakeAudio(stream.hasAudio());
 //                System.out.println("HasVideo: "+stream.hasVideo());
 //                System.out.println("HasFakeVideo: "+stream.hasFakeVideo());
-                capture = new Capturer(stream);
+                capture = new Capturer(stream, null, null);
                 if (stream.hasVideo()) {
                     videoPort = capture.getVideoPort();
                 }
@@ -832,12 +832,12 @@ public class ProcessRenderer {
     public void writeCom() {
         stopped = false;
         stopMe = false;
-        new  Thread(new Runnable() {
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
                 try {
-                exporter = new Exporter(stream);
+                    exporter = new Exporter(stream);
                 } catch (SocketException ex) {
                     Logger.getLogger(ProcessRenderer.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -848,7 +848,7 @@ public class ProcessRenderer {
                 String command = plugins.getProperty(plugin).replaceAll("  ", " "); //Making sure there is no double spaces
                 command = setParameters(command);
                 System.out.println("Command Out: "+command);
-                File file=new File(userHomeDir+"/.webcamstudio/"+"WSBro.sh");
+                File file = new File(userHomeDir+"/.webcamstudio/"+"WSBro.sh");
                 FileOutputStream fos;
                 Writer dos = null;
                 try {
@@ -880,7 +880,6 @@ public class ProcessRenderer {
                 }
             }
         }).start();
-
     }
 
     public void pause() //Author Martijn Courteaux Code
