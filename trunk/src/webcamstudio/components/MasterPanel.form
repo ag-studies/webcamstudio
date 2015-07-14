@@ -134,12 +134,12 @@
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="spinFPS" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="spinHeight" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="spinWidth" alignment="0" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="spinHeight" pref="90" max="32767" attributes="0"/>
+                                          <Component id="spinWidth" max="32767" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                                      <Component id="tglLockRatio" pref="93" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="tglLockRatio" pref="58" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
