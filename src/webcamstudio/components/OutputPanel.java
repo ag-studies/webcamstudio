@@ -118,7 +118,7 @@ public class OutputPanel extends javax.swing.JPanel implements Stream.Listener, 
 //    GridBagConstraints c = new GridBagConstraints();
 
 
-
+    @SuppressWarnings("unchecked")
     /** Creates new form OutputPanel
      * @param aFrame */
     public OutputPanel(JPanel aFrame) {

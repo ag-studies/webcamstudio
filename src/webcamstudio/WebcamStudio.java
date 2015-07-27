@@ -1295,8 +1295,8 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
         });
         toolbar.add(btnAddDVCam);
 
-        btnAddHDVCam.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/HDV.png"))); // NOI18N
-        btnAddHDVCam.setToolTipText("Add HDV Stream");
+        btnAddHDVCam.setIcon(new javax.swing.ImageIcon(getClass().getResource("/webcamstudio/resources/tango/HDV2.png"))); // NOI18N
+        btnAddHDVCam.setToolTipText("Add Firewire HDV Stream");
         btnAddHDVCam.setFocusable(false);
         btnAddHDVCam.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAddHDVCam.setMaximumSize(new java.awt.Dimension(29, 28));
@@ -1425,6 +1425,11 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
 
         tabSources.setFont(new java.awt.Font("Noto Sans", 0, 11)); // NOI18N
         tabSources.setName("tabSources"); // NOI18N
+        tabSources.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabSourcesMouseClicked(evt);
+            }
+        });
 
         cameraDesktop.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("SOURCE_CAMERAS"))); // NOI18N
         cameraDesktop.setToolTipText(bundle.getString("DROP_SOURCSE")); // NOI18N
@@ -3086,6 +3091,27 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
         }
     }//GEN-LAST:event_btnAddHDVCamActionPerformed
 
+    private void tabSourcesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabSourcesMouseClicked
+        deactivateTabsComp();
+    }//GEN-LAST:event_tabSourcesMouseClicked
+    
+    public void deactivateTabsComp() {
+//        System.out.println("Deactivating tabs components !!!");
+        for (JDesktopPane desktop : tabs) {
+            for (Component c : desktop.getComponents()) {
+                if (c instanceof StreamDesktop) {
+                    StreamDesktop d = (StreamDesktop) c;
+                    try {
+                        Tools.sleep(20);
+                        d.setSelected(false);
+                    } catch (PropertyVetoException ex) {
+                        Logger.getLogger(WebcamStudio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    }
+    
     /**
      *
      */

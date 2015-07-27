@@ -460,6 +460,7 @@ public class StreamDesktop extends javax.swing.JInternalFrame {
                 formInternalFrameIconified(evt);
             }
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameDeiconified(evt);
             }
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameActivated(evt);
@@ -1282,6 +1283,19 @@ public class StreamDesktop extends javax.swing.JInternalFrame {
         stream.setMore(jCBMoreOptions.isSelected());
         stream.setSliders(jCBShowSliders.isSelected());
     }//GEN-LAST:event_formAncestorMoved
+
+    private void formInternalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameDeiconified
+        if (listener!=null){
+            new Thread(new Runnable(){
+
+                @Override
+                public void run() {
+                    listener.selectedSource(stream);
+                }
+            }).start();
+
+        }
+    }//GEN-LAST:event_formInternalFrameDeiconified
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCBAVConv;
