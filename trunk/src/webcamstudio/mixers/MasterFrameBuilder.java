@@ -236,7 +236,7 @@ public class MasterFrameBuilder implements Runnable {
             long sleepTime = (timeCode - now);
 
             // Drop frames if we're running behind - but no more than half of them
-            if ((sleepTime > 0) || ((frameNum % 2) != 0)) {
+//            if ((sleepTime > 0) || ((frameNum % 2) != 0)) {
                 fps++;
 
                 mixAudio(frames, targetFrame);
@@ -244,7 +244,7 @@ public class MasterFrameBuilder implements Runnable {
                 targetFrame = null;
                 frameBuffer.doneUpdate();
                 MasterMixer.getInstance().setCurrentFrame(frameBuffer.pop());
-            }
+//            }
 
             float delta = (now - mark);
             if (delta >= 1000) {
