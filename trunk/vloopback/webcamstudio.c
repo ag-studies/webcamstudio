@@ -1421,6 +1421,7 @@ static int vidioc_g_parm(struct file *file, void *priv, struct v4l2_streamparm *
 static int vidioc_s_parm(struct file *file, void *priv, struct v4l2_streamparm *parm)
 {
 	struct webcamstudio_device *dev;
+	int err=0;
 	MARK();
 
 	dev = webcamstudio_getdevice(file);
