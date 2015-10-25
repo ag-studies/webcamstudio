@@ -212,22 +212,22 @@ public class MasterFrameBuilder implements Runnable {
                     }
                 }
             } else {
-                for (int i = 0; i < streams.size(); i++) {
-                    Frame f;
+            for (int i = 0; i < streams.size(); i++) {
+                Frame f;
 
-                    try {
-                        Stream s = streams.get(i);
-                        f = s.call();
+                try {
+                    Stream s = streams.get(i);
+                    f = s.call();
 
-                        // Due to race conditions when sources start up, a source may not really be ready to operate by the time it's active in MasterFrameBuilder. (Ultimately that should probably be fixed)
-                        // For that reason, we guard against (f == null) here, so streams
-                        if (f != null) {
-                            frames.add(f);
-                        }
+                    // Due to race conditions when sources start up, a source may not really be ready to operate by the time it's active in MasterFrameBuilder. (Ultimately that should probably be fixed)
+                    // For that reason, we guard against (f == null) here, so streams
+                    if (f != null) {
+                        frames.add(f);
                     }
-                    catch (Exception e)
-                    {}
                 }
+                catch (Exception e)
+                {}
+            }
             }
 
             long now = currentTimeMillis();
