@@ -132,6 +132,7 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
     private File lastFolder = null;
     boolean ffmpeg = Screen.ffmpegDetected();
     boolean avconv = Screen.avconvDetected();
+    public static boolean gsNLE = Screen.nleDetected();
     boolean firstRun = true;
     static boolean autoAR = false;
     private int numCameras = 0;
@@ -337,7 +338,8 @@ public final class WebcamStudio extends JFrame implements StreamDesktop.Listener
         setTitle("WebcamStudio " + Version.version);
         ImageIcon icon = new ImageIcon(this.getClass().getResource("/webcamstudio/resources/icon.png"));
         this.setIconImage(icon.getImage());
-
+        System.out.println("NLE="+gsNLE);
+        
         tabs.add(cameraDesktop);
         tabs.add(videoDesktop);
         tabs.add(musicDesktop);
