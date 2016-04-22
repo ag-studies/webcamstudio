@@ -21,7 +21,6 @@ Build-Depends: debhelper (>= 7.2.7~),
   liblog4j1.2-java,
   libnetty-java,
   libslf4j-java,
-  libswingworker-java,
   junit
 Standards-Version: 3.9.3
 Homepage: https://code.google.com/p/webcamstudio
@@ -41,7 +40,6 @@ Depends: openjdk-7-jre,
   liblog4j1.2-java,
   libnetty-java,
   libslf4j-java,
-  libswingworker-java,
   libav-tools | ffmpeg,
   libavformat-extra-53 | libavformat-extra-54 | libavformat56 | libavformat-ffmpeg56,
   gstreamer-tools,
